@@ -26,9 +26,11 @@ class TranscriptScraper:
         if long_or_short == "long":
             base_url = self.long_podcast_base_url
             n_pages = 13
+            base_url_for_article = "https://zoe.com"
         elif long_or_short == "short":
             base_url = self.short_podcast_base_url
             n_pages = 6
+            base_url_for_article = "https://zoe.com"
         else:
             raise ValueError("long_or_short must be either 'long' or 'short'")
 
@@ -51,9 +53,11 @@ class TranscriptScraper:
                     podcast_urls.append(candidate)
                     self.logger.debug(f"Found long podcast url: {candidate}")
 
-        return podcast_urls
+        return [base_url_for_article + url for url in podcast_urls]
+    
+
 
 
 if __name__ == "__main__":
     test = TranscriptScraper()
-    print(test._get_url_of_podcasts("short"))
+    print(test._get_url_of_podcasts("long"))

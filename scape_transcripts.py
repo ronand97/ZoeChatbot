@@ -6,12 +6,17 @@ import requests
 from bs4 import BeautifulSoup
 from tqdm import tqdm
 from typing import Optional
+from pathlib import Path
+import json
 
 
 class PodcastTranscript:
     def __init__(self, title: str, transcript: str):
         self.title = title
         self.transcript = transcript
+
+    def transcript_to_dict(self) -> dict:
+        return {"title": self.title, "transcript": self.transcript}
 
 
 class TranscriptScraper:
@@ -87,12 +92,27 @@ class TranscriptScraper:
                         transcript += sibling.text + " "
         return PodcastTranscript(soup.title.text, transcript)
 
+    def run(self):
+        """
+        Run the scraper to get all the transcripts
+        and write to LFS
+        """
+        self.logger.info("Starting scraping of transcript URLS")
+        long_podcast_urls = self._get_url_of_podcasts("long")
+        short_podcast_urls = self._get_url_of_podcasts("short")
+        all_podcast_urls = long_podcast_urls + short_podcast_urls
+        transcripts = []
+        self.logger.info("Starting scraping of transcripts")
+        for url in tqdm(all_podcast_urls):
+            transcripts.append(self._get_transcript(url))
+
+        self.logger.info("Writing transcripts to LFS")
+        folder_path = Path("transcripts")  # create folder if it doesn't exist
+        folder_path.mkdir(parents=True, exist_ok=True)
+        for transcript in transcripts:
+            with open(folder_path / f"{transcript.title}.txt", "w") as f:
+                json.dump(transcript.transcript_to_dict(), f)
+
 
 if __name__ == "__main__":
-    test = TranscriptScraper()
-    # print(test._get_url_of_podcasts("long"))
-    ts = test._get_transcript(
-        "https://zoe.com/learn/podcast-ai-and-personalized-healthcare"
-    )
-    print(ts.title)
-    # print(ts.transcript)
+    TranscriptScraper().run()

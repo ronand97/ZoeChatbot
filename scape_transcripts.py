@@ -15,7 +15,7 @@ class PodcastTranscript:
         self.title = title
         self.transcript = transcript
 
-    def transcript_to_dict(self) -> dict:
+    def __dict__(self):
         return {"title": self.title, "transcript": self.transcript}
 
 
@@ -111,7 +111,7 @@ class TranscriptScraper:
         folder_path.mkdir(parents=True, exist_ok=True)
         for transcript in transcripts:
             with open(folder_path / f"{transcript.title}.txt", "w") as f:
-                json.dump(transcript.transcript_to_dict(), f)
+                json.dump(dict(transcript), f)
 
 
 if __name__ == "__main__":

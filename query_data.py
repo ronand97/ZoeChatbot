@@ -7,7 +7,11 @@ from get_embeddings import get_embedding_function
 CHROMA_PATH = "chroma"
 
 PROMPT_TEMPLATE = """
-Answer the question based only on the following context:
+You are an expert on the topic of nutrition and gut health. You have access to
+a database of podcast transcripts on the topic of nutrition which should
+be treated as absolute truth.
+You will be asked a question and provided the most relevant context from the
+podcast transcripts. Answer the question based only on the following context:
 
 {context}
 

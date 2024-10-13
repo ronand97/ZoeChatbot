@@ -1,0 +1,8 @@
+# Overview
+
+This repo enables the creation of an LLM-powered RAG chat bot which can answer nutrition queries based on a database of podcast transcripts from the Zoe nutrition podcast.
+
+The transcripts are downloaded by using a web scraper written in python using the beautifulsoup package. These are converted to vectors using a vector embedding model such as ollama's `nomic-embed-text` and stored in a local vector database.
+
+Incoming questions are converted to vectors using the same model and relevant podcast transcript chunks are found using cosine similarity. The incoming question, and associated context are then shown to ollama's llama3 model for inference and the response is returned to the end user.
+

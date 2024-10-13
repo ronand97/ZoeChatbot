@@ -1,4 +1,4 @@
-from langchain.vectorstores.chroma import Chroma
+from langchain_community.vectorstores import Chroma
 from langchain.prompts import ChatPromptTemplate
 from langchain_community.llms.ollama import Ollama
 
@@ -44,4 +44,10 @@ def query_rag(query_text: str):
 
 
 if __name__ == "__main__":
-    query_rag("What should I eat to help prevent dementia?")
+    query_rag("What impact does salt have on blood pressure?")
+
+# questions = ["Why are microbes good for you?",
+#              "Why is kefir better than yogurt?",
+#              "Can food sequencing help control blood sugar levels?",
+#              "What are the long term health effects of poor blood sugar control?",
+#              ]

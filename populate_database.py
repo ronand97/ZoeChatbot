@@ -10,6 +10,7 @@ from langchain_community.vectorstores import Chroma
 CHROMA_PATH = "chroma"
 DATA_PATH = "transcripts/"
 
+
 def load_documents() -> list[Document]:
     documents = []
     for path in tqdm(Path(DATA_PATH).rglob("*.json")):
@@ -17,6 +18,7 @@ def load_documents() -> list[Document]:
             text = json.load(f)["transcript"]
         documents.append(Document(page_content=text, metadata={"source": path.name}))
     return documents
+
 
 def split_documents(documents: list[Document]):
     text_splitter = RecursiveCharacterTextSplitter(
@@ -26,6 +28,7 @@ def split_documents(documents: list[Document]):
         is_separator_regex=False,
     )
     return text_splitter.split_documents(documents)
+
 
 def calculate_chunk_ids(chunks):
 
@@ -54,6 +57,7 @@ def calculate_chunk_ids(chunks):
         chunk.metadata["id"] = chunk_id
 
     return chunks
+
 
 def add_to_chroma(chunks: list[Document]):
     # Load the existing database.
@@ -89,4 +93,3 @@ if __name__ == "__main__":
     document_chunks = split_documents(documents)
     add_to_chroma(document_chunks)
     pass
-    
